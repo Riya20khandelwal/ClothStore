@@ -69,6 +69,7 @@ TEMPLATES = [
 
                 # for every template we use this in templates list
                 'category.context_processors.menu_links',
+                'carts.context_processors.counter',
             ],
         },
     },
