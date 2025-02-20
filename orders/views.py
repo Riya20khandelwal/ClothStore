@@ -6,6 +6,9 @@ from .models import Order
 
 import datetime
 
+def payments(request):
+    return render(request, 'orders/payments.html')
+
 def place_order(request, quantity=0, total=0):
     current_user = request.user
 
