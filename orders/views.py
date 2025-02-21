@@ -2,12 +2,13 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from carts.models import CartItem
 from .forms import OrderForm
-from .models import Order, Payment
+from .models import Order, Payment, OrderProduct
 import datetime
 import json
 
 def payments(request):
     body = json.loads(request.body)
+
     order = Order.objects.get(user=request.user, is_ordered=False, order_number=body['orderID'])
     
     # Store transaction details inside Payment model
@@ -23,6 +24,31 @@ def payments(request):
     order.payment = payment
     order.is_ordered = True
     order.save()
+
+    # Move the cart items to Order Product table
+    cart_items= CartItem.objects.filter(user=request.user)
+
+    for item in cart_items:
+        orderproduct = OrderProduct()
+        orderproduct.order_id = order.id 
+        orderproduct.payment = payment
+        orderproduct.user_id= request.user.id
+        orderproduct.product_id = item.product_id
+        orderproduct.quantity = item.quantity
+        orderproduct.product_price = item.product.price
+        orderproduct.ordered = True
+        orderproduct.save()
+
+
+        
+
+    # Reduce the quantity of the sold products
+
+    # Clear Cart
+
+    # Send order recieved email to customer
+
+    # send order number and transaction id back to sendData method via JsonResponse
     return render(request, 'orders/payments.html')
 
 def place_order(request, quantity=0, total=0):
