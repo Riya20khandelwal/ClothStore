@@ -106,7 +106,7 @@ def place_order(request, quantity=0, total=0):
             data.phone = form.cleaned_data['phone']
             data.email = form.cleaned_data['email']
             data.address_line_1 = form.cleaned_data['address_line_1']
-            data.address_line_2 = form.cleaned_data['address_line_1']
+            data.address_line_2 = form.cleaned_data['address_line_2']
             data.country = form.cleaned_data['country']
             data.state = form.cleaned_data['state']
             data.city = form.cleaned_data['city']
